@@ -7,25 +7,21 @@ const client = new Client({
   intents: [GatewayIntentBits.Guilds]
 })
 
-function handleAppIsReady (): void {
+async function handleAppIsReady (): Promise<void> {
+  await deployCommands()
   console.log(`Logged in as ${client.user?.tag}`)
 }
 
 async function handleInteractionCreate (interaction: Interaction): Promise<void> {
-  if (!interaction.isCommand()) {
-    return
-  }
-
+  if (!interaction.isCommand()) return
   const { commandName } = interaction
 
-  if (commandName in commands) {
-    const keyCommnad = commandName as keyof typeof commands
-    void commands[keyCommnad].execute(interaction)
-  }
+  if (!(commandName in commands)) return
+  const keyCommnad = commandName as keyof typeof commands
+  void commands[keyCommnad].execute(interaction)
 }
 
 client.once("ready", handleAppIsReady)
 client.on("interactionCreate", handleInteractionCreate)
 
-void deployCommands()
 void client.login(process.env.TOKEN)
