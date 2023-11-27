@@ -5,7 +5,7 @@
 Crea el archivo `.env` en la raíz del proyecto
 
 ```
-CLIENTID=
-SERVERID=
-TOKEN=
+CLIENT_ID=
+SERVER_ID=
+DISCORD_TOKEN=
 ```

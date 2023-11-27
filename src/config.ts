@@ -1,13 +1,9 @@
 import "dotenv/config"
 
-const { TOKEN, CLIENTID, SERVERID } = process.env
+const { DISCORD_TOKEN, CLIENT_ID, SERVER_ID } = process.env
 
-if ((TOKEN == null) || (CLIENTID == null) || (SERVERID == null)) {
+if (DISCORD_TOKEN === undefined || CLIENT_ID === undefined || SERVER_ID === undefined) {
   throw new Error("Missing environment variables")
 }
 
-export {
-  CLIENTID,
-  SERVERID,
-  TOKEN
-}
+export const config = { CLIENT_ID, SERVER_ID, DISCORD_TOKEN }
