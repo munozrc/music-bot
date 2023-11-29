@@ -1,5 +1,5 @@
 import { type CommandInteraction, SlashCommandBuilder, ChannelType } from "discord.js"
-import { joinVoiceChannel } from "@discordjs/voice"
+import { joinVoiceChannel, getVoiceConnections } from "@discordjs/voice"
 
 export const data = new SlashCommandBuilder()
   .setName("join")
@@ -24,6 +24,14 @@ export async function execute (interaction: CommandInteraction): Promise<void> {
     typeof adapterCreator === "undefined"
   ) {
     await interaction.reply("Failed to join bot to voice channel.")
+    return
+  }
+
+  const connections = getVoiceConnections()
+  const numberOfConnections = connections.size
+
+  if (numberOfConnections > 0) {
+    await interaction.reply("The bot is already in the voice channel.")
     return
   }
 
