@@ -1,15 +1,20 @@
 import { Client, GatewayIntentBits, type Interaction } from "discord.js"
+import { generateDependencyReport } from "@discordjs/voice"
 import { deployCommands } from "./deploy-commands"
 import { commands } from "./commands"
-import "dotenv/config"
 
 const client = new Client({
-  intents: [GatewayIntentBits.Guilds]
+  intents: [
+    GatewayIntentBits.Guilds,
+    GatewayIntentBits.GuildMessages,
+    GatewayIntentBits.GuildVoiceStates
+  ]
 })
 
 async function handleAppIsReady (): Promise<void> {
   await deployCommands()
   console.log(`Logged in as ${client.user?.tag}`)
+  console.log(generateDependencyReport())
 }
 
 async function handleInteractionCreate (interaction: Interaction): Promise<void> {
