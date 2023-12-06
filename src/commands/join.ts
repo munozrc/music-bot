@@ -1,5 +1,7 @@
 import { type CommandInteraction, SlashCommandBuilder, ChannelType } from "discord.js"
 import { joinVoiceChannel, getVoiceConnections, VoiceConnectionStatus } from "@discordjs/voice"
+
+import { initQueueManager } from "../libs/queue-manager"
 import { initAudioPlayer } from "../libs/audio-player"
 
 export const data = new SlashCommandBuilder()
@@ -52,5 +54,6 @@ export async function execute (interaction: CommandInteraction): Promise<void> {
     console.log(`[VOICE_CHANNEL] connection success to ${voiceChannel.name}`)
     void interaction.reply(`Joined to ${voiceChannel.name}`)
     initAudioPlayer(voiceConnection)
+    initQueueManager()
   })
 }

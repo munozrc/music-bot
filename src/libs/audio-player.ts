@@ -1,5 +1,6 @@
 import { createAudioPlayer, AudioPlayerStatus, createAudioResource, type VoiceConnection, type AudioPlayer, type AudioResource } from "@discordjs/voice"
 import ytdl from "ytdl-core"
+import { playNextSong } from "./audio-player-controls"
 
 export let audioPlayer: AudioPlayer | undefined
 export let audioResource: AudioResource | undefined
@@ -13,14 +14,9 @@ export function initAudioPlayer (connection: VoiceConnection): void {
     console.error(`[AUDIO_PLAYER_ERROR]: ${err.stack}`)
   })
 
-  audioPlayer.on(AudioPlayerStatus.Playing, (oldState, newState) => {
-    console.log("[AUDIO_PLAYER] Playing a song")
-  })
-
   audioPlayer.on(AudioPlayerStatus.Idle, (oldState, newState) => {
-    if (oldState.status !== AudioPlayerStatus.Idle) {
-      audioResource = undefined
-    }
+    if (oldState.status === AudioPlayerStatus.Playing) playNextSong()
+    console.log({ old: oldState.status, new: newState.status })
     console.log("[AUDIO_PLAYER] Now is idle")
   })
 }

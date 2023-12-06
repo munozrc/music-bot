@@ -2,7 +2,8 @@ import { type CommandInteraction, SlashCommandBuilder } from "discord.js"
 import { getVoiceConnections } from "@discordjs/voice"
 import ytdl from "ytdl-core"
 
-import { audioPlayer, initAudioResource } from "../libs/audio-player"
+import { addSong, getNumberOfSongs } from "../libs/queue-manager"
+import { playSong } from "../libs/audio-player-controls"
 
 export const data = new SlashCommandBuilder()
   .setName("play")
@@ -25,20 +26,26 @@ export async function execute (interaction: CommandInteraction): Promise<void> {
   }
 
   const URL = interaction.options.getString("url")
+  const isFirstSongAdded = getNumberOfSongs() === 0
 
-  if (URL === null) {
-    console.error("[VOICE_CHANNEL_WARNING] URL song is required")
-    await interaction.reply("URL song is empty")
-    return
-  }
-
-  if (!ytdl.validateURL(URL)) {
+  if (URL === null || !ytdl.validateURL(URL)) {
     console.error("[VOICE_CHANNEL_WARNING] URL song is not valid")
     await interaction.reply("URL song is not valid")
     return
   }
 
-  const audioResource = initAudioResource(URL)
-  audioPlayer?.play(audioResource)
-  await interaction.reply("Playing!")
+  const song = addSong({
+    title: "",
+    artist: "",
+    thumbnail: "",
+    source: URL
+  })
+
+  if (!isFirstSongAdded) {
+    await interaction.reply("Add new song")
+    return
+  }
+
+  playSong(song)
+  await interaction.reply("Now playing!")
 }
