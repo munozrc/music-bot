@@ -4,6 +4,7 @@ import ytdl from "ytdl-core"
 
 import { addSong, getNumberOfSongs } from "../libs/queue-manager"
 import { playSong } from "../libs/audio-player-controls"
+import { getSingleVideo } from "../services/single-video"
 
 export const data = new SlashCommandBuilder()
   .setName("play")
@@ -34,24 +35,27 @@ export async function execute (interaction: CommandInteraction): Promise<void> {
     return
   }
 
-  const song = addSong({
-    title: "MY EYES",
-    artist: "Travis Scott",
-    thumbnail: "https://lh3.googleusercontent.com/eBvJuWpjg0Mx8DBa5WIhCzEopXyMnxkjWSU895BDGjTpNeqrliLrv3zGqNNuCUoXL1EkEAr5VQ3cx2pW=w544-h544-l90-rj",
-    source: URL
-  })
+  if (/playlist?list/.test(URL)) {
+    await interaction.reply("The bot does not yet support playlist URLs")
+  }
+
+  const id = ytdl.getVideoID(URL)
+  const song = await getSingleVideo({ id })
+
+  if (typeof song === "undefined") {
+    console.error("[VOICE_CHANNEL_ERROR] Failed to add song: " + id)
+    await interaction.reply("Failed to add song")
+    return
+  }
 
   const responseEmbed = new EmbedBuilder()
     .setColor(0x0099FF)
     .setTitle("Added Song!")
     .setImage(song.thumbnail)
-    .setDescription(`${song.artist} - ${song.title}`)
+    .setDescription(`**${song.artist}** - ${song.title}`)
+    .setURL(song.source)
 
-  if (!isFirstSongAdded) {
-    await interaction.reply({ embeds: [responseEmbed] })
-    return
-  }
-
-  playSong(song)
+  const newSong = addSong(song)
+  isFirstSongAdded && playSong(newSong)
   await interaction.reply({ embeds: [responseEmbed] })
 }
