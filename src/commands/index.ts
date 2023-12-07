@@ -3,6 +3,7 @@ import * as leave from "./leave"
 import * as ping from "./ping"
 import * as play from "./play"
 import * as queue from "./queue"
+import * as search from "./search"
 import * as volume from "./volume"
 
 export const commands = {
@@ -11,5 +12,6 @@ export const commands = {
   ping,
   play,
   queue,
+  search,
   volume
 }

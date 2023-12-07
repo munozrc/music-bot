@@ -1,12 +1,11 @@
 {
   "name": "music-bot",
   "version": "0.0.1",
-  "main": "index.js",
   "private": true,
   "scripts": {
     "build": "tsc -p .",
-    "start": "node ./dist/index.js",
-    "dev": "nodemon ./src/index.ts",
+    "start": "node dist/index.js",
+    "dev": "nodemon src/index.ts",
     "lint": "eslint . --ext .ts --ignore-path .gitignore",
     "lint:fix": "eslint . --ext .ts --ignore-path .gitignore --fix"
   },
@@ -17,6 +16,8 @@
     "dotenv": "16.3.1",
     "ffmpeg-static": "5.2.0",
     "libsodium-wrappers": "0.7.13",
+    "node-youtube-music": "0.8.3",
+    "play-dl": "1.9.7",
     "ytdl-core": "4.11.5"
   },
   "devDependencies": {
