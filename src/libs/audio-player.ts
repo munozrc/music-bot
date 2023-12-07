@@ -4,7 +4,7 @@ import ytdl from "ytdl-core"
 
 export let audioPlayer: AudioPlayer | undefined
 export let audioResource: AudioResource | undefined
-export let volume: number = 0.2
+export let volume: number = 0.15
 
 export function initAudioPlayer (connection: VoiceConnection): void {
   audioPlayer = createAudioPlayer()
