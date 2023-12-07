@@ -1,4 +1,4 @@
-import { type CommandInteraction, SlashCommandBuilder } from "discord.js"
+import { type CommandInteraction, SlashCommandBuilder, EmbedBuilder } from "discord.js"
 import { getVoiceConnections } from "@discordjs/voice"
 import ytdl from "ytdl-core"
 
@@ -35,17 +35,23 @@ export async function execute (interaction: CommandInteraction): Promise<void> {
   }
 
   const song = addSong({
-    title: "",
-    artist: "",
-    thumbnail: "",
+    title: "MY EYES",
+    artist: "Travis Scott",
+    thumbnail: "https://lh3.googleusercontent.com/eBvJuWpjg0Mx8DBa5WIhCzEopXyMnxkjWSU895BDGjTpNeqrliLrv3zGqNNuCUoXL1EkEAr5VQ3cx2pW=w544-h544-l90-rj",
     source: URL
   })
 
+  const responseEmbed = new EmbedBuilder()
+    .setColor(0x0099FF)
+    .setTitle("Added Song!")
+    .setImage(song.thumbnail)
+    .setDescription(`${song.artist} - ${song.title}`)
+
   if (!isFirstSongAdded) {
-    await interaction.reply("Add new song")
+    await interaction.reply({ embeds: [responseEmbed] })
     return
   }
 
   playSong(song)
-  await interaction.reply("Now playing!")
+  await interaction.reply({ embeds: [responseEmbed] })
 }

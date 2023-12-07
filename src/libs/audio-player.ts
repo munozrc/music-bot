@@ -1,6 +1,6 @@
 import { createAudioPlayer, AudioPlayerStatus, createAudioResource, type VoiceConnection, type AudioPlayer, type AudioResource } from "@discordjs/voice"
-import ytdl from "ytdl-core"
 import { playNextSong } from "./audio-player-controls"
+import ytdl from "ytdl-core"
 
 export let audioPlayer: AudioPlayer | undefined
 export let audioResource: AudioResource | undefined

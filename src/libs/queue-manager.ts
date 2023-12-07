@@ -1,6 +1,6 @@
 import type { Song, SongWithoutUUID } from "../types"
 
-export let queue: Song[]
+export let queue: Song[] = []
 
 export function initQueueManager (): void {
   queue = []
